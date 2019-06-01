@@ -157,7 +157,7 @@ void CLIOptions::printStatus(uint32_t frameNum)
     float bitrate = 0.008f * totalbytes * (param->fpsNum / param->fpsDenom) / ((float)frameNum);
     if(count==0)
     {
-        printf("x265 Bitrate %.2f kb/s [%.1f%%] %d/%d frames, %.2f fps  \n",bitrate,
+        printf("x265 Bitrate %.2f kb/s [%.1f%%] %d/%d frames, %.2f fps    \n",bitrate,
             100. * frameNum / (param->chunkEnd ? param->chunkEnd : param->totalFrames), frameNum, (param->chunkEnd ? param->chunkEnd : param->totalFrames), fps  );
     }
     if((int)frameNum == param->totalFrames)
