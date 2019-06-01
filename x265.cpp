@@ -155,11 +155,12 @@ void CLIOptions::printStatus(uint32_t frameNum)
     int64_t elapsed = time - startTime;
     double fps = elapsed > 0 ? frameNum * 1000000. / elapsed : 0;
     float bitrate = 0.008f * totalbytes * (param->fpsNum / param->fpsDenom) / ((float)frameNum);
+    printf("Bitrate: %.2f kb/s \n",bitrate);
     if (framesToBeEncoded)
     {
         int eta = (int)(elapsed * (framesToBeEncoded - frameNum) / ((int64_t)frameNum * 1000000));
-        sprintf(buf, "x265 [%.1f%%] %d/%d frames, %.2f fps, %.2f kb/s, eta %d:%02d:%02d",
-            100. * frameNum / (param->chunkEnd ? param->chunkEnd : param->totalFrames), frameNum, (param->chunkEnd ? param->chunkEnd : param->totalFrames), fps, bitrate,
+        sprintf(buf, "           x265 [%.1f%%] %d/%d frames, %.2f fps,  eta %d:%02d:%02d",
+            100. * frameNum / (param->chunkEnd ? param->chunkEnd : param->totalFrames), frameNum, (param->chunkEnd ? param->chunkEnd : param->totalFrames), fps, 
                 eta / 3600, (eta / 60) % 60, eta % 60);
     }
     else
