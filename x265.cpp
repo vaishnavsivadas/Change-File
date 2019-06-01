@@ -57,7 +57,7 @@ static char orgConsoleTitle[CONSOLE_TITLE_SIZE] = "";
 #define SetConsoleTitle(t)
 #define SetThreadExecutionState(es)
 #endif
-
+int count=0;
 using namespace X265_NS;
 
 /* Ctrl-C handler */
@@ -149,14 +149,21 @@ void CLIOptions::printStatus(uint32_t frameNum)
     char buf[200];
     int64_t time = x265_mdate();
 
-    if (!bProgress || !frameNum || (prevUpdateTime && time - prevUpdateTime < UPDATE_INTERVAL))
+    if (!bProgress || !frameNum )
         return;
 
     int64_t elapsed = time - startTime;
     double fps = elapsed > 0 ? frameNum * 1000000. / elapsed : 0;
     float bitrate = 0.008f * totalbytes * (param->fpsNum / param->fpsDenom) / ((float)frameNum);
-    printf("x265 Bitrate %.2f kb/s [%.1f%%] %d/%d frames, %.2f fps  \n",bitrate,
-            100. * frameNum / (param->chunkEnd ? param->chunkEnd : param->totalFrames), frameNum, (param->chunkEnd ? param->chunkEnd : param->totalFrames), fps);
+    if(count==0)
+    {
+        printf("x265 Bitrate %.2f kb/s [%.1f%%] %d/%d frames, %.2f fps  \n",bitrate,
+            100. * frameNum / (param->chunkEnd ? param->chunkEnd : param->totalFrames), frameNum, (param->chunkEnd ? param->chunkEnd : param->totalFrames), fps  );
+    }
+    if((int)frameNum == param->totalFrames)
+    {
+        count=1;
+    }
     if (framesToBeEncoded)
     {
         int eta = (int)(elapsed * (framesToBeEncoded - frameNum) / ((int64_t)frameNum * 1000000));
